@@ -10,7 +10,7 @@ namespace PozoristeProjekat.Repositories
     public interface IPredstavaRepository
     {
         public bool SaveChanges();
-        List<Predstava> GetPredstava();
+        List<Predstava> GetPredstava(string zanr);
 
         Predstava GetPredstavaById(Guid PredstavaId);
 

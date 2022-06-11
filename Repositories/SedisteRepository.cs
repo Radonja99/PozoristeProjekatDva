@@ -25,9 +25,9 @@ namespace PozoristeProjekat.Repositories
             return mapper.Map<SedisteConfirmation>(createdEntity.Entity);
         }
 
-        public void DeleteSediste(Guid SedisteId)
+        public void DeleteSediste(Guid sedisteId)
         {
-            var sediste = GetSedisteById(SedisteId);
+            var sediste = GetSedisteById(sedisteId);
             context.Remove(sediste);
         }
 

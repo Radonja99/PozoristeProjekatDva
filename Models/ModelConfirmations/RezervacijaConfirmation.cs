@@ -9,6 +9,9 @@ namespace PozoristeProjekat.Models.ModelConfirmations
     {
         public Guid RezervacijaID { get; set; }
 
+        public int BrojMesta { get; set; }
+
+        public int UkupnaCenaRezervacije { get; set; }
         public DateTime DatumKreiranjaRezervacije { get; set; }
     }
 }

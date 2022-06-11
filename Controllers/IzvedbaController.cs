@@ -32,7 +32,7 @@ namespace PozoristeProjekat.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+  //      [Authorize]
         public ActionResult<List<IzvedbaDTO>> GetIzvedbaSve()
         {
             
@@ -46,7 +46,7 @@ namespace PozoristeProjekat.Controllers
 
         
         [HttpGet("{IzvedbaID}")]
-        [Authorize]
+ //       [Authorize]
         public ActionResult<IzvedbaDTO> GetIzvedba(Guid IzvedbaID)
         {
             var izvedba = izvedbaRepository.GetIzvedbaById(IzvedbaID);
@@ -57,8 +57,8 @@ namespace PozoristeProjekat.Controllers
             return Ok(mapper.Map<IzvedbaDTO>(izvedba));
         }
         [HttpPost]
-        [Authorize(Roles = "admin")]
-        public ActionResult<IzvedbaConfirmationDTO> CreatePredstava([FromBody] IzvedbaCreationDTO izvedba)
+   //     [Authorize(Roles = "admin")]
+        public ActionResult<IzvedbaConfirmationDTO> CreateIzvedba([FromBody] IzvedbaCreationDTO izvedba)
         {
             try
             {
@@ -66,7 +66,7 @@ namespace PozoristeProjekat.Controllers
                 IzvedbaConfirmation confirmation = izvedbaRepository.CreateIzvedba(izvedbaEntity);
 
                 izvedbaRepository.SaveChanges();
-                string location = linkGenerator.GetPathByAction("GetIzvedbaSve", "Izvedba", new { IzvedbaID = confirmation.IzvedbaID });
+                string location = linkGenerator.GetPathByAction("GetIzvedbaSve", "Izvedba", new { confirmation.IzvedbaID });
                 return Created(location, mapper.Map<IzvedbaConfirmationDTO>(confirmation));
             }
             catch
@@ -92,7 +92,7 @@ namespace PozoristeProjekat.Controllers
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Delete Error");
+                return StatusCode(StatusCodes.Status412PreconditionFailed, "Nemoguce je obrisati izvedbu dok postoje aktivne rezervacije.");
             }
         }
         [HttpPut("{IzvedbaID}")]

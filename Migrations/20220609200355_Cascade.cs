@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace PozoristeProjekat.Migrations
 {
-    public partial class Role : Migration
+    public partial class Cascade : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -12,13 +12,13 @@ namespace PozoristeProjekat.Migrations
                 columns: table => new
                 {
                     KorisnikID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    ImeKorisnika = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PrezimeKorisnika = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    JMBGKorisnika = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    KorisnickoIme = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LozinkaKorisnika = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImeKorisnika = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PrezimeKorisnika = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Telefon = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
+                    KorisnickoIme = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LozinkaKorisnika = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     BrojRezervacija = table.Column<int>(type: "int", nullable: false),
-                    role = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,7 +30,7 @@ namespace PozoristeProjekat.Migrations
                 columns: table => new
                 {
                     PredstavaID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NazivPredstave = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NazivPredstave = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Zanr = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BrojIzvodjenja = table.Column<int>(type: "int", nullable: false),
                     DatumPremijere = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -61,9 +61,9 @@ namespace PozoristeProjekat.Migrations
                 columns: table => new
                 {
                     PozoristeID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NazivPozorista = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NazivPozorista = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Adresa = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Grad = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Grad = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UrednikID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
                 },
                 constraints: table =>
@@ -74,7 +74,7 @@ namespace PozoristeProjekat.Migrations
                         column: x => x.UrednikID,
                         principalTable: "Urednik",
                         principalColumn: "UrednikID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.SetNull);
                 });
 
             migrationBuilder.CreateTable(
@@ -82,9 +82,9 @@ namespace PozoristeProjekat.Migrations
                 columns: table => new
                 {
                     SalaID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    NazivSale = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    NazivSale = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     UkupanBrojMesta = table.Column<int>(type: "int", nullable: false),
-                    PozoristeID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    PozoristeID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -94,7 +94,7 @@ namespace PozoristeProjekat.Migrations
                         column: x => x.PozoristeID,
                         principalTable: "Pozoriste",
                         principalColumn: "PozoristeID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -104,8 +104,10 @@ namespace PozoristeProjekat.Migrations
                     IzvedbaID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DatumPrikazivanja = table.Column<DateTime>(type: "datetime2", nullable: false),
                     GostujucaPredstava = table.Column<bool>(type: "bit", nullable: false),
-                    SalaID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    PredstavaID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    BrojSlobodnihMesta = table.Column<int>(type: "int", nullable: false),
+                    Cena = table.Column<int>(type: "int", nullable: false),
+                    SalaID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PredstavaID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -115,13 +117,13 @@ namespace PozoristeProjekat.Migrations
                         column: x => x.PredstavaID,
                         principalTable: "Predstava",
                         principalColumn: "PredstavaID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Izvedba_Sala_SalaID",
                         column: x => x.SalaID,
                         principalTable: "Sala",
                         principalColumn: "SalaID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -151,11 +153,12 @@ namespace PozoristeProjekat.Migrations
                 {
                     RezervacijaID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DatumKreiranjaRezervacije = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    placeno = table.Column<bool>(type: "bit", nullable: false),
+                    BrojMesta = table.Column<int>(type: "int", nullable: false),
+                    UkupnaCenaRezervacije = table.Column<int>(type: "int", nullable: false),
+                    Placeno = table.Column<bool>(type: "bit", nullable: false),
                     DatumIstekaRezervacije = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    KorisnikID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    SedisteID = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IzvedbaID = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    KorisnikID = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    IzvedbaID = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -171,13 +174,7 @@ namespace PozoristeProjekat.Migrations
                         column: x => x.KorisnikID,
                         principalTable: "Korisnik",
                         principalColumn: "KorisnikID",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Rezervacija_Sediste_SedisteID",
-                        column: x => x.SedisteID,
-                        principalTable: "Sediste",
-                        principalColumn: "SedisteID",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
@@ -196,21 +193,14 @@ namespace PozoristeProjekat.Migrations
                 column: "UrednikID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Rezervacija_IzvedbaID_SedisteID",
+                name: "IX_Rezervacija_IzvedbaID",
                 table: "Rezervacija",
-                columns: new[] { "IzvedbaID", "SedisteID" },
-                unique: true,
-                filter: "[IzvedbaID] IS NOT NULL AND [SedisteID] IS NOT NULL");
+                column: "IzvedbaID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Rezervacija_KorisnikID",
                 table: "Rezervacija",
                 column: "KorisnikID");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Rezervacija_SedisteID",
-                table: "Rezervacija",
-                column: "SedisteID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Sala_PozoristeID",
@@ -229,13 +219,13 @@ namespace PozoristeProjekat.Migrations
                 name: "Rezervacija");
 
             migrationBuilder.DropTable(
+                name: "Sediste");
+
+            migrationBuilder.DropTable(
                 name: "Izvedba");
 
             migrationBuilder.DropTable(
                 name: "Korisnik");
-
-            migrationBuilder.DropTable(
-                name: "Sediste");
 
             migrationBuilder.DropTable(
                 name: "Predstava");

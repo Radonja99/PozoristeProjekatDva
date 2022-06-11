@@ -12,6 +12,9 @@ namespace PozoristeProjekat.DTOs.Creations
 
         public Boolean GostujucaPredstava { get; set; }
 
+
+        public int Cena { get; set; }
+
         public Guid? SalaID { get; set; }
 
         public Guid? PredstavaID { get; set; }

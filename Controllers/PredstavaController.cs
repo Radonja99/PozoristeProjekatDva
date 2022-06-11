@@ -33,9 +33,9 @@ namespace PozoristeProjekat.Controllers
         }
 
         [HttpGet]
-        public ActionResult<List<PredstavaDTO>> GetPredstaveSve()
+        public ActionResult<List<PredstavaDTO>> GetPredstaveSve(string? zanr)
         {
-            var predstave = predstavaRepository.GetPredstava();
+            var predstave = predstavaRepository.GetPredstava(zanr);
             if (predstave == null || predstave.Count == 0)
             {
                 return NoContent();
@@ -76,7 +76,7 @@ namespace PozoristeProjekat.Controllers
         }
 
         [HttpDelete("{PredstavaID}")]
-        [Authorize(Roles = "admin")]
+//        [Authorize(Roles = "admin")]
         public IActionResult DeletePredstava(Guid PredstavaID)
         {
             try

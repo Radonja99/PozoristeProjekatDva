@@ -13,7 +13,7 @@ namespace PozoristeProjekat.DTOs.Updates
 
         public string PrezimeKorisnika { get; set; }
 
-        public string JMBGKorisnika { get; set; }
+        public string Telefon { get; set; }
 
         public string KorisnickoIme { get; set; }
 

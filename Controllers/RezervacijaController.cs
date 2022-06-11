@@ -32,8 +32,8 @@ namespace PozoristeProjekat.Controllers
             this.rezervacijaRepository = rezervacijaRepository;
         }
         [HttpGet]
-        [Authorize(Roles = "admin")]
-        public ActionResult<List<RezervacijaDTO>> getRezervacijaSve()
+     //   [Authorize(Roles = "admin")]
+        public ActionResult<List<RezervacijaDTO>> GetRezervacijaSve()
         {
             var rezervacije = rezervacijaRepository.GetRezervacija();
             if (rezervacije == null || rezervacije.Count == 0)
@@ -43,8 +43,8 @@ namespace PozoristeProjekat.Controllers
                return Ok(mapper.Map<List<RezervacijaDTO>>(rezervacije));
         }
         [HttpGet("{RezervacijaID}")]
-        [Authorize(Roles = "admin")]
-        public ActionResult<RezervacijaDTO> getRezervacija(Guid rezervacijaID)
+    //    [Authorize(Roles = "admin")]
+        public ActionResult<RezervacijaDTO> GetRezervacija(Guid rezervacijaID)
         {
             var rezervacija = rezervacijaRepository.GetRezervacijaById(rezervacijaID);
             if (rezervacija == null)
@@ -57,23 +57,36 @@ namespace PozoristeProjekat.Controllers
         [Authorize]
         public ActionResult<RezervacijaConfirmationDTO> CreateRezervacija([FromBody] RezervacijaCreationDTO rezervacija)
         {
+            
             try
             {
                 Rezervacija rezervacijaEntity = mapper.Map<Rezervacija>(rezervacija);
+                //       if (izvedbaRepository.GetIzvedbaById((Guid)rezervacijaEntity.IzvedbaID).BrojSlobodnihMesta< rezervacijaEntity.BrojMesta)
+                //       {
+                //          return StatusCode(StatusCodes.Status406NotAcceptable, "Nema dovoljno mesta za tu izvedbu.");
+                //      }
+                if (rezervacijaRepository.Checker(rezervacijaEntity)) 
+                {
+                           return StatusCode(StatusCodes.Status406NotAcceptable, "Nema dovoljno mesta za tu izvedbu.");
+                }
+                if (rezervacijaRepository.Checker2Korisnik(rezervacijaEntity))
+                {
+                    return StatusCode(StatusCodes.Status406NotAcceptable, "Prekoracili ste dozvoljen broj rezervacija!");
+                }
                 RezervacijaConfirmation confirmation = rezervacijaRepository.CreateRezervacija(rezervacijaEntity);
                 rezervacijaRepository.SaveChanges();
 
-                string location = linkGenerator.GetPathByAction("GetRezervacijaSve", "Rezervacija", new { RezervacijaID = confirmation.RezervacijaID });
+                string location = linkGenerator.GetPathByAction("GetRezervacijaSve", "Rezervacija", new { confirmation.RezervacijaID });
                 return Created(location, mapper.Map<RezervacijaConfirmationDTO>(confirmation));
             }
             catch
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Delete error");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Create error");
 
             }
         }
         [HttpDelete("{RezervacijaID}")]
-        [Authorize(Roles = "admin")]
+ //       [Authorize(Roles = "admin")]
         public IActionResult DeleteRezervacija(Guid rezervacijaID)
         {
             try
@@ -95,7 +108,7 @@ namespace PozoristeProjekat.Controllers
         }
         [HttpPut("{RezervacijaID}")]
         [Authorize(Roles = "admin")]
-        public ActionResult<RezervacijaConfirmationDTO> updateRezervacija (RezervacijaUpdateDTO rezervacija)
+        public ActionResult<RezervacijaConfirmationDTO> UpdateRezervacija (RezervacijaUpdateDTO rezervacija)
         {
             try
             {

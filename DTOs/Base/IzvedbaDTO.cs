@@ -11,6 +11,9 @@ namespace PozoristeProjekat.DTOs
 
         public DateTime DatumPrikazivanja { get; set; }
 
+        public int BrojSlobodnihMesta { get; set; }
+
+        public int Cena { get; set; }
         public Boolean GostujucaPredstava { get; set; }
 
         public SalaDTO Sala { get; set; }

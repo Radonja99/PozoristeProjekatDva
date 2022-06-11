@@ -11,10 +11,11 @@ namespace PozoristeProjekat.Models
    
         public Guid SalaID { get; set; }
 
+        [Required]
         public string NazivSale { get; set; }
 
         public int UkupanBrojMesta { get; set; }
-
+        [Required]
         public Guid? PozoristeID { get; set; }
 
         public Pozoriste Pozoriste { get; set; }

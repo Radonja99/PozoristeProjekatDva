@@ -10,8 +10,8 @@ using PozoristeProjekat.Models;
 namespace PozoristeProjekat.Migrations
 {
     [DbContext(typeof(PozoristeContext))]
-    [Migration("20220606171001_Role")]
-    partial class Role
+    [Migration("20220609200355_Cascade")]
+    partial class Cascade
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -27,6 +27,12 @@ namespace PozoristeProjekat.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("BrojSlobodnihMesta")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Cena")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DatumPrikazivanja")
                         .HasColumnType("datetime2");
 
@@ -34,9 +40,11 @@ namespace PozoristeProjekat.Migrations
                         .HasColumnType("bit");
 
                     b.Property<Guid?>("PredstavaID")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid?>("SalaID")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("IzvedbaID");
@@ -58,22 +66,29 @@ namespace PozoristeProjekat.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("ImeKorisnika")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("JMBGKorisnika")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("KorisnickoIme")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LozinkaKorisnika")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PrezimeKorisnika")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("role")
+                    b.Property<string>("Role")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Telefon")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
 
                     b.HasKey("KorisnikID");
 
@@ -90,9 +105,11 @@ namespace PozoristeProjekat.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Grad")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NazivPozorista")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("UrednikID")
@@ -118,6 +135,7 @@ namespace PozoristeProjekat.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("NazivPredstave")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Zanr")
@@ -134,33 +152,32 @@ namespace PozoristeProjekat.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("BrojMesta")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DatumIstekaRezervacije")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("DatumKreiranjaRezervacije")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid?>("IzvedbaID")
+                    b.Property<Guid>("IzvedbaID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("KorisnikID")
+                    b.Property<Guid>("KorisnikID")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("SedisteID")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool>("placeno")
+                    b.Property<bool>("Placeno")
                         .HasColumnType("bit");
+
+                    b.Property<int>("UkupnaCenaRezervacije")
+                        .HasColumnType("int");
 
                     b.HasKey("RezervacijaID");
 
+                    b.HasIndex("IzvedbaID");
+
                     b.HasIndex("KorisnikID");
-
-                    b.HasIndex("SedisteID");
-
-                    b.HasIndex("IzvedbaID", "SedisteID")
-                        .IsUnique()
-                        .HasFilter("[IzvedbaID] IS NOT NULL AND [SedisteID] IS NOT NULL");
 
                     b.ToTable("Rezervacija");
                 });
@@ -172,9 +189,11 @@ namespace PozoristeProjekat.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("NazivSale")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("PozoristeID")
+                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("UkupanBrojMesta")
@@ -242,11 +261,15 @@ namespace PozoristeProjekat.Migrations
                 {
                     b.HasOne("PozoristeProjekat.Models.Predstava", "Predstava")
                         .WithMany()
-                        .HasForeignKey("PredstavaID");
+                        .HasForeignKey("PredstavaID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("PozoristeProjekat.Models.Sala", "Sala")
                         .WithMany()
-                        .HasForeignKey("SalaID");
+                        .HasForeignKey("SalaID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Predstava");
 
@@ -257,7 +280,8 @@ namespace PozoristeProjekat.Migrations
                 {
                     b.HasOne("PozoristeProjekat.Models.Urednik", "Urednik")
                         .WithMany()
-                        .HasForeignKey("UrednikID");
+                        .HasForeignKey("UrednikID")
+                        .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("Urednik");
                 });
@@ -266,28 +290,28 @@ namespace PozoristeProjekat.Migrations
                 {
                     b.HasOne("PozoristeProjekat.Models.Izvedba", "Izvedba")
                         .WithMany()
-                        .HasForeignKey("IzvedbaID");
+                        .HasForeignKey("IzvedbaID")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
 
                     b.HasOne("PozoristeProjekat.Models.Korisnik", "Korisnik")
                         .WithMany()
-                        .HasForeignKey("KorisnikID");
-
-                    b.HasOne("PozoristeProjekat.Models.Sediste", "Sediste")
-                        .WithMany()
-                        .HasForeignKey("SedisteID");
+                        .HasForeignKey("KorisnikID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Izvedba");
 
                     b.Navigation("Korisnik");
-
-                    b.Navigation("Sediste");
                 });
 
             modelBuilder.Entity("PozoristeProjekat.Models.Sala", b =>
                 {
                     b.HasOne("PozoristeProjekat.Models.Pozoriste", "Pozoriste")
                         .WithMany()
-                        .HasForeignKey("PozoristeID");
+                        .HasForeignKey("PozoristeID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Pozoriste");
                 });

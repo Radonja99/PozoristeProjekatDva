@@ -12,6 +12,7 @@ namespace PozoristeProjekat.Repositories
         public bool SaveChanges();
         List<Rezervacija> GetRezervacija();
 
+        bool Checker2Korisnik(Rezervacija rezervacija);
         Rezervacija GetRezervacijaById(Guid RezervacijaId);
 
         RezervacijaConfirmation CreateRezervacija(Rezervacija rezervacija);
@@ -19,5 +20,7 @@ namespace PozoristeProjekat.Repositories
         RezervacijaConfirmation UpdateRezervacija(Rezervacija rezervacija);
 
         void DeleteRezervacija(Guid RezervacijaId);
+
+        bool Checker(Rezervacija rezervacija);
     }
 }

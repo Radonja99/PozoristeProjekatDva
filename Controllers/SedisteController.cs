@@ -64,7 +64,7 @@ namespace PozoristeProjekat.Controllers
 
                 sedisteRepository.SaveChanges();
 
-                string location = linkGenerator.GetPathByAction("GetSedisteSve", "Sediste", new { SedisteID = confirmation.SedisteID });
+                string location = linkGenerator.GetPathByAction("GetSedisteSve", "Sediste", new { confirmation.SedisteID });
                 return Created(location, mapper.Map<SedisteConfirmationDTO>(confirmation));
             }
             catch

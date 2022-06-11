@@ -9,6 +9,8 @@ namespace PozoristeProjekat.Models.ModelConfirmations
     {
         public Guid IzvedbaID { get; set; }
 
+        public int Cena { get; set; }
+
         public DateTime DatumPrikazivanja { get; set; }
     }
 }

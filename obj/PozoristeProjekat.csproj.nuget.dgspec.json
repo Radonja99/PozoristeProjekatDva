@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ADMIN\\Downloads\\PozoristeProjekat-main(1)\\PozoristeProjekat-main\\PozoristeProjekat.csproj": {}
+    "C:\\Users\\Radonja\\Source\\Repos\\PozoristeProjekatDva\\PozoristeProjekat.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ADMIN\\Downloads\\PozoristeProjekat-main(1)\\PozoristeProjekat-main\\PozoristeProjekat.csproj": {
+    "C:\\Users\\Radonja\\Source\\Repos\\PozoristeProjekatDva\\PozoristeProjekat.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ADMIN\\Downloads\\PozoristeProjekat-main(1)\\PozoristeProjekat-main\\PozoristeProjekat.csproj",
+        "projectUniqueName": "C:\\Users\\Radonja\\Source\\Repos\\PozoristeProjekatDva\\PozoristeProjekat.csproj",
         "projectName": "PozoristeProjekat",
-        "projectPath": "C:\\Users\\ADMIN\\Downloads\\PozoristeProjekat-main(1)\\PozoristeProjekat-main\\PozoristeProjekat.csproj",
-        "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ADMIN\\Downloads\\PozoristeProjekat-main(1)\\PozoristeProjekat-main\\obj\\",
+        "projectPath": "C:\\Users\\Radonja\\Source\\Repos\\PozoristeProjekatDva\\PozoristeProjekat.csproj",
+        "packagesPath": "C:\\Users\\Radonja\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Radonja\\Source\\Repos\\PozoristeProjekatDva\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Radonja\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -88,7 +85,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.405\\RuntimeIdentifierGraph.json"
         }
       }
     }

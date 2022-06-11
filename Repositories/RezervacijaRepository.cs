@@ -19,6 +19,28 @@ namespace PozoristeProjekat.Repositories
             this.context = context;
             this.mapper = mapper;
         }
+        public bool Checker(Rezervacija rezervacija )
+        {
+            IIzvedbaRepository izvedbaRepository = new IzvedbaRepository(context, mapper);
+            Izvedba izvedba;
+            izvedba = izvedbaRepository.GetIzvedbaById(rezervacija.IzvedbaID);
+            if (izvedba.BrojSlobodnihMesta > rezervacija.BrojMesta)
+            {
+                return false;
+            }
+            return true;
+        }
+        public bool Checker2Korisnik(Rezervacija rezervacija)
+        {
+            IKorisnikRepository korisnikRepository = new KorisnikRepository(context, mapper);
+            Korisnik korisnik;
+            korisnik = korisnikRepository.GetKorisnikById(rezervacija.KorisnikID);
+            if (korisnik.BrojRezervacija + rezervacija.BrojMesta < 15)
+            {
+                return false;
+            }
+            return true;
+        }
         public RezervacijaConfirmation CreateRezervacija(Rezervacija rezervacija)
         {
             var createdEntity = context.Add(rezervacija);
@@ -33,7 +55,7 @@ namespace PozoristeProjekat.Repositories
 
         public List<Rezervacija> GetRezervacija()
         {
-            return context.Rezervacija.Include(g=>g.Izvedba).Include(g=>g.Korisnik).Include(g=>g.Sediste).ToList();
+            return context.Rezervacija.Include(g=>g.Izvedba).Include(g=>g.Korisnik).Include(g=>g.Izvedba.Sala).Include(g=>g.Izvedba.Predstava).Include(g=>g.Izvedba.Sala.Pozoriste).ToList();
         }
 
         public Rezervacija GetRezervacijaById(Guid RezervacijaId)

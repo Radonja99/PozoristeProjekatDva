@@ -8,6 +8,9 @@ namespace PozoristeProjekat.DTOs.Confirmations
     public class IzvedbaConfirmationDTO
     {
         public Guid IzvedbaID { get; set; }
+       
+
+        public int Cena { get; set; }
 
         public DateTime DatumPrikazivanja { get; set; }
 

@@ -30,9 +30,25 @@ namespace PozoristeProjekat.Models
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<Rezervacija>()
-                .HasIndex(u => new { u.IzvedbaID, u.SedisteID })
-                .IsUnique();
-        }
+
+            builder.Entity("PozoristeProjekat.Models.Pozoriste", b =>
+                {
+                    b.HasOne("PozoristeProjekat.Models.Urednik", "Urednik")
+                        .WithMany()
+                        .HasForeignKey("UrednikID")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Urednik");
+                });
+            builder.Entity("PozoristeProjekat.Models.Rezervacija", b =>
+            {
+                b.HasOne("PozoristeProjekat.Models.Izvedba", "Izvedba")
+                    .WithMany()
+                    .HasForeignKey("IzvedbaID")
+                    .OnDelete(DeleteBehavior.Restrict)
+                    .IsRequired();
+            });
+           }
+
     }
 }

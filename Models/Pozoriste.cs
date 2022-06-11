@@ -9,10 +9,12 @@ namespace PozoristeProjekat.Models
     public class Pozoriste
     {
 
+        [Key]
         public Guid PozoristeID { get; set; }
+        [Required]
         public string NazivPozorista { get; set; }
         public string Adresa { get; set; }
-        
+        [Required]
         public string Grad { get; set; }
         public Guid? UrednikID { get; set; }
 

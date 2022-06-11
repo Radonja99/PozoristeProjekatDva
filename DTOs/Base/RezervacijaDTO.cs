@@ -11,13 +11,16 @@ namespace PozoristeProjekat.DTOs
 
         public DateTime DatumKreiranjaRezervacije { get; set; }
 
-        public bool placeno { get; set; }
+        public bool Placeno { get; set; }
+
+        public int UkupnaCenaRezervacije { get; set; }
         public DateTime DatumIstekaRezervacije { get; set; }
-        
+
+        public int BrojMesta { get; set; }
 
         public KorisnikDTO Korisnik { get; set; }
 
-        public SedisteDTO Sediste { get; set; }
+ //       public SedisteDTO Sediste { get; set; }
 
         public IzvedbaDTO Izvedba { get; set; }
     }

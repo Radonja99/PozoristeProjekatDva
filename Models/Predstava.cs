@@ -9,7 +9,7 @@ namespace PozoristeProjekat.Models
     public class Predstava
     {
         public Guid PredstavaID { get; set; }
-
+        [Required]
         public string NazivPredstave { get; set; }
 
         public string Zanr { get; set; }

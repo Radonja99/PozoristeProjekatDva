@@ -21,7 +21,9 @@ namespace PozoristeProjekat.Repositories
         }
         public IzvedbaConfirmation CreateIzvedba(Izvedba izvedba)
         {
-            var createdEntity = context.Add(izvedba) ;
+            Console.Write(izvedba);
+            var createdEntity = context.Add(izvedba);
+            
             return mapper.Map<IzvedbaConfirmation>(createdEntity.Entity);
 
         }
@@ -34,7 +36,8 @@ namespace PozoristeProjekat.Repositories
 
         public List<Izvedba> GetIzvedba()
         {
-            return context.Izvedba.Include(g => g.Sala).Include(g => g.Predstava).Include(g=>g.Sala.Pozoriste).Include(g=>g.Sala.Pozoriste.Urednik).ToList();
+             return context.Izvedba.Include(g => g.Sala).Include(g => g.Predstava).Include(g => g.Sala.Pozoriste).Include(g => g.Sala.Pozoriste.Urednik).ToList();
+
         }
 
         public Izvedba GetIzvedbaById(Guid IzvedbaId)
@@ -53,6 +56,8 @@ namespace PozoristeProjekat.Repositories
 
             izvedbaold.IzvedbaID = izvedba.IzvedbaID;
             izvedbaold.SalaID = izvedba.SalaID;
+            izvedbaold.Cena = izvedba.Cena;
+            izvedbaold.BrojSlobodnihMesta = izvedba.BrojSlobodnihMesta;
             izvedbaold.PredstavaID = izvedba.PredstavaID;
             izvedbaold.GostujucaPredstava = izvedba.GostujucaPredstava;
             izvedbaold.DatumPrikazivanja = izvedba.DatumPrikazivanja;
@@ -60,7 +65,6 @@ namespace PozoristeProjekat.Repositories
             {
                 IzvedbaID = izvedba.IzvedbaID,
                 DatumPrikazivanja = izvedba.DatumPrikazivanja
-                
             };
         }
         public List<Izvedba> GetSveIzvedbePredstave(Guid id)

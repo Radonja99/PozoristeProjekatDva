@@ -13,7 +13,7 @@ namespace PozoristeProjekat.DTOs
 
         public string PrezimeKorisnika { get; set; }
 
-        public string JMBGKorisnika { get; set; }
+        public string Telefon { get; set; }
 
         public string KorisnickoIme { get; set; }
 
@@ -21,6 +21,6 @@ namespace PozoristeProjekat.DTOs
 
         public int BrojRezervacija { get; set; }
 
-        public string role { get; set; }
+        public string Role { get; set; }
     }
 }

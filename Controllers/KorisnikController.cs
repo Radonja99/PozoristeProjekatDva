@@ -45,12 +45,12 @@ namespace PozoristeProjekat.Controllers
             return Ok(mapper.Map<List<KorisnikDTO>>(korisnik));
         }
         [HttpGet("{korisnikID}")]
-        public ActionResult<KorisnikDTO> getKorisnik(Guid korisnikID)
+        public ActionResult<KorisnikDTO> GetKorisnik(Guid korisnikID)
         {
             var korisnik = korisnikRepository.GetKorisnikById(korisnikID);
             if (korisnik == null )
             {
-                return NotFound();
+                return NotFound("Korisnik nije pronadjen.");
             }
             return Ok(mapper.Map<KorisnikDTO>(korisnik));
         }
@@ -66,13 +66,12 @@ namespace PozoristeProjekat.Controllers
 
                 korisnikRepository.SaveChanges();
 
-                string location = linkGenerator.GetPathByAction("GetKorisnikSve", "Korisnik", new { KorisnikID = confirmation.KorisnikID });
+                string location = linkGenerator.GetPathByAction("GetKorisnikSve", "Korisnik", new { confirmation.KorisnikID });
                 return Created(location, mapper.Map<KorisnikConfirmationDTO>(confirmation));
             }
             catch
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, "Create error");
-
             }
         }
         [Authorize(Roles = "admin")]
@@ -84,7 +83,7 @@ namespace PozoristeProjekat.Controllers
             var korisnik = korisnikRepository.GetKorisnikById(korisnikID);
                 if (korisnik == null)
                 {
-                    return NotFound();
+                    return NotFound("Korisnik nije pronadjen.");
                 }
                 korisnikRepository.DeleteKorisnik(korisnikID);
                 korisnikRepository.SaveChanges();
@@ -122,9 +121,14 @@ namespace PozoristeProjekat.Controllers
         public IActionResult Authentication([FromBody] KorisnikLoginDTO korisnik)
         {
             Korisnik korisnikModel = korisnikRepository.GetByKorisnickoIme(korisnik.KorisnickoIme);
-            if (korisnikModel == null || korisnikModel.LozinkaKorisnika != korisnik.LozinkaKorisnika)
+            if (korisnikModel == null)
             {
-                return Unauthorized();
+                return StatusCode(StatusCodes.Status404NotFound, "Ne postoji korisnik sa tim username. Proverite podatke.");
+            }
+
+            if (korisnikModel.LozinkaKorisnika != korisnik.LozinkaKorisnika)
+            {
+                return StatusCode(StatusCodes.Status401Unauthorized, "Lozinka se ne podudara sa username. Proverite da li ste ispravno uneli lozinku.");
             }
             var token = _jwtAuth.Authentication(korisnik.KorisnickoIme, korisnik.LozinkaKorisnika, korisnikRepository);
             if (token == null)

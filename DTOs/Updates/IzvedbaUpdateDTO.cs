@@ -13,6 +13,10 @@ namespace PozoristeProjekat.DTOs.Updates
 
         public Boolean GostujucaPredstava { get; set; }
 
+        public int BrojSlobodnihMesta { get; set; }
+
+        public int Cena { get; set; }
+
         public Guid SalaID { get; set; }
 
         public Guid PredstavaID { get; set; }

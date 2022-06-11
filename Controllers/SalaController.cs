@@ -32,8 +32,8 @@ namespace PozoristeProjekat.Controllers
             this.salaRepository = salaRepository;
         }
         [HttpGet]
-        [Authorize]
-        public ActionResult<List<SalaDTO>> getSalaSve() {
+   //     [Authorize]
+        public ActionResult<List<SalaDTO>> GetSalaSve() {
             var sale = salaRepository.GetSala();
             if (sale == null || sale.Count == 0)
             {
@@ -42,8 +42,8 @@ namespace PozoristeProjekat.Controllers
             return Ok(mapper.Map<List<SalaDTO>>(sale));
         }
         [HttpGet("{SalaID}")]
-        [Authorize]
-        public ActionResult<SalaDTO> getSala(Guid SalaID)
+    //    [Authorize]
+        public ActionResult<SalaDTO> GetSala(Guid SalaID)
         {
             var sala = salaRepository.GetSalaById(SalaID);
             if (sala == null)
@@ -54,7 +54,7 @@ namespace PozoristeProjekat.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "admin")]
-        public ActionResult<SalaConfirmationDTO> createSala([FromBody] SalaCreationDTO sala)
+        public ActionResult<SalaConfirmationDTO> CreateSala([FromBody] SalaCreationDTO sala)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace PozoristeProjekat.Controllers
 
                 salaRepository.SaveChanges();
 
-                string location = linkGenerator.GetPathByAction("GetSalaSve", "Sala", new { SalaID = confirmation.SalaID });
+                string location = linkGenerator.GetPathByAction("GetSalaSve", "Sala", new { confirmation.SalaID });
                 return Created(location, mapper.Map<SalaConfirmationDTO>(confirmation));
             }
             catch
@@ -94,7 +94,7 @@ namespace PozoristeProjekat.Controllers
         }
         [HttpPut("{SalaID}")]
         [Authorize(Roles = "admin")]
-        public ActionResult<SalaConfirmationDTO> updateSala (SalaUpdateDTO sala)
+        public ActionResult<SalaConfirmationDTO> UpdateSala (SalaUpdateDTO sala)
         {
             try
             {

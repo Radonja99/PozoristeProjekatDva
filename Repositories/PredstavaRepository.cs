@@ -31,9 +31,11 @@ namespace PozoristeProjekat.Repositories
             context.Remove(predstava);
         }
 
-        public List<Predstava> GetPredstava()
+        public List<Predstava> GetPredstava(string zanr)
         {
-            return context.Predstava.ToList();
+            return context.Predstava.
+                Where(e => (zanr == null || e.Zanr == zanr))
+                .ToList();
         }
 
         public Predstava GetPredstavaById(Guid PredstavaId)

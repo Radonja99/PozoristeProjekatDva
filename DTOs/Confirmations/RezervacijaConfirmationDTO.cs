@@ -11,5 +11,9 @@ namespace PozoristeProjekat.DTOs.Confirmations
 
         public DateTime DatumKreiranjaRezervacije { get; set; }
 
+        public int UkupnaCenaRezervacije { get; set; }
+
+        public int BrojMesta { get; set; }
+
     }
 }
